@@ -35,7 +35,7 @@ WORKDIR /root/workspace
 
 ###### Project Specific Installation ######
 
-# Get code (--recursive will download submodules)
+
 RUN git clone https://github.com/N-Demir/gaussian-splatting-nvs-leaderboard.git . --recursive
 
 # Install (avoid conda installs because they don't work well in dockerfile situations)
