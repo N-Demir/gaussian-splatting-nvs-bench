@@ -34,9 +34,7 @@ WORKDIR /root/workspace
 
 
 ###### Project Specific Installation ######
-
-
-RUN git clone https://github.com/N-Demir/gaussian-splatting-nvs-leaderboard.git . --recursive
+RUN git clone https://github.com/graphdeco-inria/gaussian-splatting.git . --recursive
 
 # Install (avoid conda installs because they don't work well in dockerfile situations)
 # Separating these on separate lines helps if there are errors (previous lines will be cached) especially on the large package installs
