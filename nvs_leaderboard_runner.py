@@ -7,9 +7,6 @@ import time
 
 import modal
 
-# python train.py -s ~/data/examples/kitchen -m ~/output/examples_kitchen_gaussian_splatting/ --iterations 10
-# python render.py -m ~/output/examples_kitchen_gaussian_splatting/ -s ~/data/tandt/truck
-# output on the "test" set will be in ~/output/examples_kitchen_gaussian_splatting/train/ours_10/renders/``
 
 nvs_leaderboard_data_volume = modal.Volume.from_name("nvs-leaderboard-data", create_if_missing=True)
 nvs_leaderboard_output_volume = modal.Volume.from_name("nvs-leaderboard-output", create_if_missing=True)
@@ -26,18 +23,15 @@ app = modal.App("gaussian-splatting",
                 .add_local_file("nvs_leaderboard_eval.sh", "/root/workspace/nvs_leaderboard_eval.sh")
                 )
 
-
-
-
 @app.function(
     timeout=3600,
     gpu="T4",
     volumes=MODAL_VOLUMES,
 )
-def run():
+def run(dataset_and_scene: str):
     # Kind of silly modal requires this to avoid race conditions while using volumes
     nvs_leaderboard_data_volume.reload()
-    os.system("bash nvs_leaderboard_eval.sh")
+    os.system(f"bash nvs_leaderboard_eval.sh {dataset_and_scene}")
     nvs_leaderboard_output_volume.commit()
 
 
