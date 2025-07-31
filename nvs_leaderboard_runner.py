@@ -15,8 +15,7 @@ MODAL_VOLUMES = {
     "/nvs-leaderboard-output": nvs_leaderboard_output_volume,
 }
 
-# app = modal.App("gaussian-splatting", image=modal.Image.from_dockerfile(Path(__file__).parent / "Dockerfile"))
-app = modal.App("gaussian-splatting", 
+app = modal.App("nvs-leaderboard-runner", 
                 image=modal.Image.from_dockerfile("Dockerfile").run_commands(
                     "mkdir -p /run/sshd"
                 ).add_local_file(Path.home() / ".ssh/id_rsa.pub", "/root/.ssh/authorized_keys")
@@ -28,10 +27,10 @@ app = modal.App("gaussian-splatting",
     gpu="T4",
     volumes=MODAL_VOLUMES,
 )
-def run(dataset_and_scene: str):
+def run(scene: str):
     # Kind of silly modal requires this to avoid race conditions while using volumes
     nvs_leaderboard_data_volume.reload()
-    os.system(f"bash nvs_leaderboard_eval.sh {dataset_and_scene}")
+    os.system(f"bash nvs_leaderboard_eval.sh {scene}")
     nvs_leaderboard_output_volume.commit()
 
 
