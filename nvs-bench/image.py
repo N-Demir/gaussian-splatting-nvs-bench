@@ -86,4 +86,15 @@ image = (
     # .run_commands("pip install submodules/diff-gaussian-rasterization")
     # .run_commands("pip install -e .")
     # Note: If your run_commands step needs access to a gpu it's actually possible to do that through "run_commands(gpu='L40S', ...)"
+    .run_commands("git clone https://github.com/graphdeco-inria/gaussian-splatting.git . --recursive")
+
+    # Install (avoid conda installs because they don't work well in dockerfile situations)
+    # Separating these on separate lines helps if there are errors (previous lines will be cached) especially on the large package installs
+    .run_commands("pip install plyfile")
+    .run_commands("pip install tqdm")
+    .run_commands("pip install opencv-python")
+    .run_commands("pip install joblib")
+    .run_commands("pip install submodules/diff-gaussian-rasterization")
+    .run_commands("pip install submodules/simple-knn")
+    .run_commands("pip install submodules/fused-ssim")
 )
